@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}{% block crumb %}Dashboard{% endblock %}
+{% block content %}
+<div class="page-heading"><div><div class="eyebrow">ESTATE OFFICE PORTAL</div><h1>Campus overview</h1><p>Monitor spaces, maintenance activity and campus assets in one place.</p></div><a class="button primary" href="{{ url_for('maintenance') }}">＋ New maintenance request</a></div>
+<div class="welcome"><div><span class="welcome-tag">GROUP E PROJECT</span><h2>Facilities, organised.</h2><p>A single workspace for the everyday operations of the college estate office.</p></div><div class="welcome-art"><div class="building">▥</div><div class="art-caption">SPACE · SERVICE · ASSETS</div></div></div>
+<div class="stats-grid">
+  <div class="stat-card"><div class="stat-top"><span>Total rooms</span><span class="stat-icon blue">▤</span></div><div class="stat-number">{{ stats.rooms }}</div><div class="stat-foot">Registered campus spaces</div></div>
+  <div class="stat-card"><div class="stat-top"><span>Available rooms</span><span class="stat-icon green">✓</span></div><div class="stat-number">{{ stats.available }}</div><div class="stat-foot">Ready for allocation</div></div>
+  <div class="stat-card"><div class="stat-top"><span>Open maintenance</span><span class="stat-icon orange">⚒</span></div><div class="stat-number">{{ stats.open_requests }}</div><div class="stat-foot">Requests not yet completed</div></div>
+  <div class="stat-card"><div class="stat-top"><span>Asset records</span><span class="stat-icon purple">▣</span></div><div class="stat-number">{{ stats.assets }}</div><div class="stat-foot">Items in inventory</div></div>
+</div>
+<div class="two-col">
+ <div class="panel"><div class="panel-head"><div><h3>Recent maintenance</h3><p>Latest reported facility issues</p></div><a href="{{ url_for('maintenance') }}">View all →</a></div>
+ {% if requests %}<div class="table-wrap"><table><thead><tr><th>Issue</th><th>Location</th><th>Priority</th><th>Status</th></tr></thead><tbody>{% for r in requests %}<tr><td class="primary-cell">{{ r.title }}</td><td>{{ r.location }}</td><td><span class="priority {{ r.priority|lower }}">{{ r.priority }}</span></td><td><span class="status {{ r.status|lower|replace(' ','-') }}">{{ r.status }}</span></td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty">No maintenance requests yet.</div>{% endif %}</div>
+ <div class="panel"><div class="panel-head"><div><h3>Quick actions</h3><p>Common estate-office tasks</p></div></div><div class="quick-list">
+ <a href="{{ url_for('rooms') }}"><span class="quick-icon blue">▤</span><span><strong>Allocate a room</strong><small>Manage classrooms and spaces</small></span><b>→</b></a>
+ <a href="{{ url_for('maintenance') }}"><span class="quick-icon orange">⚒</span><span><strong>Report an issue</strong><small>Log repair and service needs</small></span><b>→</b></a>
+ <a href="{{ url_for('assets') }}"><span class="quick-icon purple">▣</span><span><strong>Add campus asset</strong><small>Update the inventory register</small></span><b>→</b></a>
+ <a href="{{ url_for('reports') }}"><span class="quick-icon green">▥</span><span><strong>Open reports</strong><small>Review current summaries</small></span><b>→</b></a>
+ </div></div>
+</div>
+<div class="panel"><div class="panel-head"><div><h3>Room availability</h3><p>Recently added or updated spaces</p></div><a href="{{ url_for('rooms') }}">Manage rooms →</a></div><div class="table-wrap"><table><thead><tr><th>Room</th><th>Building</th><th>Type</th><th>Capacity</th><th>Status</th></tr></thead><tbody>{% for room in rooms %}<tr><td class="primary-cell">{{ room.room_no }}</td><td>{{ room.building }}</td><td>{{ room.room_type }}</td><td>{{ room.capacity }}</td><td><span class="status {{ room.status|lower }}">{{ room.status }}</span></td></tr>{% endfor %}</tbody></table></div></div>
+{% endblock %}

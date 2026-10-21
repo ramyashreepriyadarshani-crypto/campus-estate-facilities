@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% block title %}Room Allocation{% endblock %}{% block crumb %}Room Allocation{% endblock %}
+{% block content %}
+<div class="page-heading"><div><div class="eyebrow">SPACE PLANNING</div><h1>Room allocation</h1><p>Register rooms and keep their current assignment up to date.</p></div></div>
+<div class="panel form-panel"><div class="panel-head"><div><h3>Add a room</h3><p>Enter the details of a campus space.</p></div></div>
+<form method="post" class="form-grid">
+<label>Room number<input name="room_no" required placeholder="e.g. A-103"></label><label>Building<input name="building" required placeholder="e.g. Academic Block A"></label>
+<label>Room type<select name="room_type"><option>Classroom</option><option>Laboratory</option><option>Faculty Room</option><option>Meeting Room</option><option>Office</option><option>Store Room</option></select></label><label>Capacity<input type="number" min="0" name="capacity" value="30" required></label>
+<label>Status<select name="status"><option>Available</option><option>Allocated</option><option>Under Maintenance</option></select></label><label>Assigned to<input name="assigned_to" placeholder="Class / department (optional)"></label>
+<div class="form-actions"><button class="button primary" type="submit">Save room</button></div></form></div>
+<div class="panel"><div class="panel-head"><div><h3>Room register</h3><p>{{ rooms|length }} spaces recorded</p></div></div><div class="table-wrap"><table><thead><tr><th>Room</th><th>Building</th><th>Type</th><th>Capacity</th><th>Current assignment</th><th>Status / update</th></tr></thead><tbody>{% for r in rooms %}<tr><td class="primary-cell">{{ r.room_no }}</td><td>{{ r.building }}</td><td>{{ r.room_type }}</td><td>{{ r.capacity }}</td><td>{{ r.assigned_to or '—' }}</td><td><form class="inline-form" method="post" action="{{ url_for('update_room', room_id=r.id) }}"><select name="status">{% for s in ['Available','Allocated','Under Maintenance'] %}<option {% if r.status==s %}selected{% endif %}>{{ s }}</option>{% endfor %}</select><input name="assigned_to" value="{{ r.assigned_to }}" placeholder="Assignee"><button class="button small" type="submit">Update</button></form></td></tr>{% endfor %}</tbody></table></div></div>
+{% endblock %}

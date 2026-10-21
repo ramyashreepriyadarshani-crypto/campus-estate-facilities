@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Campus Estate{% endblock %} | BGU Estate Office</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand"><div class="brand-mark">EF</div><div><strong>EstateFlow</strong><small>Campus facilities</small></div></div>
+  <div class="nav-label">WORKSPACE</div>
+  <nav>
+    <a class="{{ 'active' if request.endpoint=='dashboard' else '' }}" href="{{ url_for('dashboard') }}">▦ <span>Dashboard</span></a>
+    <a class="{{ 'active' if request.endpoint in ['rooms','update_room'] else '' }}" href="{{ url_for('rooms') }}">▤ <span>Room Allocation</span></a>
+    <a class="{{ 'active' if request.endpoint in ['maintenance','update_maintenance'] else '' }}" href="{{ url_for('maintenance') }}">⚒ <span>Maintenance</span></a>
+    <a class="{{ 'active' if request.endpoint=='assets' else '' }}" href="{{ url_for('assets') }}">▣ <span>Asset Management</span></a>
+    <a class="{{ 'active' if request.endpoint=='reports' else '' }}" href="{{ url_for('reports') }}">▥ <span>Reports</span></a>
+  </nav>
+  <div class="sidebar-bottom"><div class="avatar">GE</div><div><strong>Group E</strong><small>Student project</small></div></div>
+</aside>
+<main class="main">
+  <header class="topbar"><div class="crumb">BGU / <span>{% block crumb %}Overview{% endblock %}</span></div><div class="top-right"><span class="live-dot"></span> Local demo environment <div class="top-avatar">E</div></div></header>
+  <section class="page">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}{% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+    <footer>Campus Estate &amp; Facilities Management System <span>·</span> Group E <span>·</span> Academic prototype</footer>
+  </section>
+</main>
+</body></html>
